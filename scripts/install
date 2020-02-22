@@ -131,6 +131,7 @@ newaliases
 
 #adding cronjob for removing expired email addresses
 cp -a ../conf/$app.cron /etc/cron.d/$app
+chown root:root /etc/cron.d/$app
 chmod 644 /etc/cron.d/$app
 
 # Create a dedicated nginx config

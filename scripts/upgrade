@@ -189,6 +189,7 @@ yunohost service regen-conf postfix -f
 #=================================================
 
 chown -R www-data:www-data $final_path
+chown root:root /etc/cron.d/$app
 
 
 #=================================================

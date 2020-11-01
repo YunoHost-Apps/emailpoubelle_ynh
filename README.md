@@ -34,19 +34,6 @@ or
 sudo yunohost app upgrade emailpoubelle -u https://github.com/Yunohost-Apps/emailpoubelle_ynh/tree/Testing --debug
 ```
 
-## TODO : 
-
-- [X] check nginx conf
-- [X] insert cron in conf
-- [ ] insert symlink for langages in /lang
-- [ ] remove new locale on remove
-- [ ] Test it ! (and check if that doesn't interfer with postfix and its aliases)
-- [X] cron job to remove redirections (`0 */2 * * * /usr/bin/wget -q -t 1 -T 7200 -O /dev/null 'https://domain/poubelle/index.php?act=cron' >/dev/null 2>&1) 
-- [ ] conflict with SSOWAT + non-public app
-- [X] package_check integration
-- [ ] Multiinstance
-- [ ] LDAP
-
 ## LICENCE
 
 Package and software are GPL 3.0

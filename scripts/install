@@ -18,14 +18,14 @@ admin=$YNH_APP_ARG_ADMIN
 ynh_print_OFF
 password=$YNH_APP_ARG_PASSWORD
 ynh_print_ON
-is_public=$5
+is_public=$YNH_APP_ARG_IS_PUBLIC
 final_path=/var/www/$app
 db_user=emailPoubelle
 
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
-ynh_print_info "Check settings for installation"
+ynh_script_progression --message="Validating installation parameters..." --weight=1
 final_path=/var/www/$app
 test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
@@ -43,6 +43,7 @@ ynh_user_exists "$admin"
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
+ynh_script_progression --message="Storing installation settings..." --weight=1
 
 ynh_app_setting_set $app domain $domain
 ynh_app_setting_set $app path $path_url
@@ -54,7 +55,7 @@ ynh_app_setting_set $app final_path $final_path
 #=================================================
 #INSTALL DEPENDENCIES
 #=================================================
-ynh_print_info "Installing dependencies"
+ynh_script_progression --message="Installing dependencies..." --weight=15
 ynh_install_app_dependencies $pkg_dependencies
 
 #install locale (nginx will restart at the end of the install)
@@ -68,7 +69,7 @@ locale-gen
 #INSTALL SOURCES
 #===============================================
 
-ynh_print_info "Downloading sources to $final_path"
+ynh_script_progression --message="Setting up source files..." --weight=5
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source "$final_path"
 cp ../conf/index_source.php $final_path/www/index.php
@@ -83,7 +84,7 @@ ln -s $final_path/www/template-exemple $final_path/template-exemple
 #===============================================
 #SETTINGS & DATABASE
 #===============================================
-ynh_print_info "Setting database & settings"
+ynh_script_progression --message="Setting database & settings..."
 
 #generating random password for database
 ynh_print_OFF
@@ -117,7 +118,7 @@ ynh_print_ON
 #setting postfix to use virtual aliases file
 # Add postfix configuration hook and regen postfix conf
 cp -R ../sources/hooks/conf_regen/98-postfix_emailpoubelle /usr/share/yunohost/hooks/conf_regen/
-yunohost service regen-conf postfix
+yunohost tools regen-conf postfix
 
 #create the virtual aliases file 
 touch $final_path/var/virtual
@@ -135,6 +136,7 @@ chown root:root /etc/cron.d/$app
 chmod 644 /etc/cron.d/$app
 
 # Create a dedicated nginx config
+ynh_script_progression --message="Configuring nginx web server..." --weight=2
 ynh_add_nginx_config
 
 #=================================================
@@ -154,4 +156,4 @@ fi
 ynh_systemd_action --service_name=nginx --action=reload
 ynh_systemd_action --service_name=postfix --action=reload
 service php* reload
-
+ynh_script_progression --message="Installation of $app completed" --last

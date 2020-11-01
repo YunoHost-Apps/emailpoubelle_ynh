@@ -12,7 +12,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-
+ynh_script_progression --message="Loading installation settings..."
 app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get $app domain)
 path_url=$(ynh_app_setting_get $app path)
@@ -37,7 +37,7 @@ upgrade_type=$(ynh_check_app_version_changed)
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
-
+ynh_script_progression --message="Ensuring downward compatibility..."
 # Fix is_public as a boolean value
 if [ "$is_public" = "Yes" ]; then
 	ynh_app_setting_set --app=$app --key=is_public --value=1
@@ -63,7 +63,7 @@ fi
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
-
+ynh_script_progression --message="Backing up the app before upgrading (may take a while)..."
 # Backup the current version of the app
 ynh_backup_before_upgrade
 ynh_clean_setup () {
@@ -129,7 +129,7 @@ path_url=$(ynh_normalize_url_path $path_url)
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_print_info "Upgrading nginx web server configuration..."
+ynh_script_progression --message="Upgrading nginx web server configuration..."
 
 ynh_backup_if_checksum_is_different "/etc/nginx/conf.d/$domain.d/$app.conf"
 
@@ -139,7 +139,7 @@ ynh_add_nginx_config
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_print_info "Installing dependencies"
+ynh_script_progression --message="Upgrading dependencies..."
 ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
@@ -159,7 +159,7 @@ fi
 #INSTALL SOURCES
 #===============================================
 
-ynh_print_info "Downloading sources to $final_path"
+ynh_script_progression --message="Upgrading source files..."
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source "$final_path"
 cp ../conf/index_source.php $final_path/www/index.php
@@ -182,7 +182,7 @@ fi
 # Add postfix configuration hook and regen postfix conf
 cp -R ../sources/hooks/conf_regen/98-postfix_emailpoubelle /usr/share/yunohost/hooks/conf_regen/
 mv /etc/postfix/main.cf /etc/postfix/main.cf.emailpoubelle.bak
-yunohost service regen-conf postfix -f
+yunohost tools regen-conf postfix -f
 
 #=================================================
 # SECURE FILES AND DIRECTORIES
@@ -195,7 +195,14 @@ chown root:root /etc/cron.d/$app
 #=================================================
 # RELOAD SERVICES
 #=================================================
+ynh_script_progression --message="Starting a systemd service..."
 ynh_systemd_action --service_name=php7.0-fpm --action=restart
+
+ynh_script_progression --message="Reloading nginx web server..."
 ynh_systemd_action --service_name=nginx --action=reload
+
+ynh_script_progression --message="Reloading postfix..."
 ynh_systemd_action --service_name=postfix --action=reload
+
+ynh_script_progression --message="Upgrade of $app completed" --last
 

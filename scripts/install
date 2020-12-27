@@ -29,9 +29,6 @@ ynh_script_progression --message="Validating installation parameters..." --weigh
 final_path=/var/www/$app
 test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
-# Normalize the url path syntax
-path_url=$(ynh_normalize_url_path $path_url)
-
 # Check web path availability
 ynh_webpath_available $domain $path_url
 # Register (book) web path
@@ -68,8 +65,8 @@ locale-gen
 #=================================================
 #INSTALL SOURCES
 #===============================================
-
 ynh_script_progression --message="Setting up source files..." --weight=5
+
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source "$final_path"
 cp ../conf/index_source.php $final_path/www/index.php
@@ -80,6 +77,14 @@ ln -s $final_path/lang/fr $final_path/lang/fr_FR
 ln -s $final_path/lang/it $final_path/lang/it_IT
 ln -s $final_path/www/template-exemple $final_path/template-exemple
 
+#=================================================
+# PHP-FPM CONFIGURATION
+#=================================================
+ynh_script_progression --message="Configuring PHP-FPM..." --weight=2
+
+# Create a dedicated PHP-FPM config
+ynh_add_fpm_config 
+phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 
 #===============================================
 #SETTINGS & DATABASE
@@ -136,24 +141,25 @@ chown root:root /etc/cron.d/$app
 chmod 644 /etc/cron.d/$app
 
 # Create a dedicated nginx config
-ynh_script_progression --message="Configuring nginx web server..." --weight=2
+ynh_script_progression --message="Configuring NGINX web server..." --weight=2
 ynh_add_nginx_config
 
 #=================================================
 # SETUP SSOWAT
 #=================================================
+ynh_script_progression --message="Configuring SSOwat..." --weight=1
 
-# Make app public if necessary
+# Make app public if necessary or protect it
 if [ $is_public -eq 1 ]
 then
-	# unprotected_uris allows SSO credentials to be passed anyway.
-	ynh_app_setting_set $app unprotected_uris "/"
+	ynh_permission_update --permission "main" --add "visitors"
 fi
 
 #=================================================
 # RELOAD SERVICES
 #=================================================
 ynh_systemd_action --service_name=nginx --action=reload
+
 ynh_systemd_action --service_name=postfix --action=reload
-service php* reload
+
 ynh_script_progression --message="Installation of $app completed" --last

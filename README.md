@@ -1,7 +1,7 @@
 # Emailpoubelle for YunoHost
 
 [![Integration level](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)  
-[![Install Emailpoubelle with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=emailpoubelle)
+[![Install Emailpoubelle with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=emailpoubelle)
 
 > *This package allows you to install Emailpoubelle quickly and simply on a YunoHost server.  
 If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/install) to learn how to install it.*

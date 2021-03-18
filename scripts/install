@@ -76,6 +76,15 @@ ln -s $final_path/lang/fr $final_path/lang/fr_FR
 ln -s $final_path/lang/it $final_path/lang/it_IT
 ln -s $final_path/www/template-exemple $final_path/template-exemple
 
+#=================================================
+# PHP-FPM CONFIGURATION
+#=================================================
+ynh_script_progression --message="Configuring PHP-FPM..." --weight=2
+
+# Create a dedicated PHP-FPM config
+ynh_add_fpm_config 
+phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
+
 #===============================================
 #SETTINGS & DATABASE
 #===============================================
@@ -142,9 +151,8 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Configuring permissions..." --weight=1
 
-# Make app public if necessary
+# Make app public if necessary or protect it
 if [ $is_public -eq 1 ]
-then
 	ynh_permission_update --permission="main" --add="visitors"
 fi
 
@@ -154,8 +162,8 @@ fi
 ynh_script_progression --message="Reloading NGINX web server..." --weight=1
 
 ynh_systemd_action --service_name=nginx --action=reload
+
 ynh_systemd_action --service_name=postfix --action=reload
-service php* reload
 
 #=================================================
 # END OF SCRIPT

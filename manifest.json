@@ -57,7 +57,7 @@
                 "help": {
                 	"en": "The app can be accessed outside Yunohost and anyone will be able to create a trash email adress",
                 	"fr": "L'application sera accessible en dehors de yunohost et n'importe qui pourra y créer une adresse poubelle"
-                	}
+                }
             }
         ]
     }

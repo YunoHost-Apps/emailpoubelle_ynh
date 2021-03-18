@@ -1,8 +1,4 @@
 #!/bin/bash
- 
-#=================================================
-# GENERIC START
-#=================================================
 
 #=================================================
 # IMPORT GENERIC HELPERS
@@ -25,11 +21,12 @@ ynh_script_progression --message="Loading settings..." --weight=1
 
 app=$YNH_APP_INSTANCE_NAME
 
-domain=$(ynh_app_setting_get $app domain)
-path_url=$(ynh_app_setting_get $app path)
-final_path=$(ynh_app_setting_get $app final_path)
-db_name=$(ynh_app_setting_get $app db_name)
-admin=$(ynh_app_setting_get $app admin)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+path_url=$(ynh_app_setting_get --app=$app --key=path)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+admin=$(ynh_app_setting_get --app=$app --key=admin)
+phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
@@ -99,6 +96,15 @@ if ! grep -q "devnull:/dev/null" /etc/aliases ; then
 fi
 
 #=================================================
+# RESTORE THE PHP-FPM CONFIGURATION
+#=================================================
+ynh_script_progression --message="Reconfiguring PHP-FPM..." --weight=5
+
+ynh_restore_file --origin_path="/etc/php/$phpversion/fpm/pool.d/$app.conf"
+
+ynh_add_fpm_config
+
+#=================================================
 # RESTORE THE CRON FILE
 #=================================================
 ynh_script_progression --message="Reinstall cron job" --weight=1
@@ -110,10 +116,10 @@ ynh_restore_file "/etc/cron.d/$app"
 #=================================================
 # RELOAD NGINX & ALIASES
 #=================================================
-ynh_script_progression --message="Reloading nginx web server and php-fpm..." --weight=1
+ynh_script_progression --message="Reloading NGINX web server and PHP-FPM..." --weight=1
 
 postmap $final_path/var/virtual
-ynh_systemd_action --service_name=php7.0-fpm --action=restart
+ynh_systemd_action --service_name=php${phpversion}-fpm --action=restart
 ynh_systemd_action --service_name=nginx --action=reload
 ynh_systemd_action --service_name=postfix --action=reload
 

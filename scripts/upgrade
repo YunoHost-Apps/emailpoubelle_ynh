@@ -19,6 +19,7 @@ path_url=$(ynh_app_setting_get $app path)
 admin=$(ynh_app_setting_get $app admin)
 final_path=$(ynh_app_setting_get $app final_path)
 db_name=$(ynh_app_setting_get $app db_name)
+phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 
 #=================================================
 # CHECK VERSION
@@ -61,6 +62,7 @@ ynh_clean_setup () {
 	# restore it if the upgrade fails
 	ynh_restore_upgradebackup
 }
+
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
@@ -123,7 +125,16 @@ ynh_add_nginx_config
 # UPGRADE DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Upgrading dependencies..."
+
 ynh_install_app_dependencies $pkg_dependencies
+
+#=================================================
+# PHP-FPM CONFIGURATION
+#=================================================
+ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=2
+
+# Create a dedicated PHP-FPM config
+ynh_add_fpm_config
 
 #=================================================
 #UPDATE SETTINGS
@@ -141,8 +152,8 @@ fi
 #=================================================
 #INSTALL SOURCES
 #===============================================
-
 ynh_script_progression --message="Upgrading source files..."
+
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source "$final_path"
 cp ../conf/index_source.php $final_path/www/index.php
@@ -177,10 +188,8 @@ chown root:root /etc/cron.d/$app
 #=================================================
 # RELOAD SERVICES
 #=================================================
-ynh_script_progression --message="Starting a systemd service..."
-ynh_systemd_action --service_name=php7.0-fpm --action=restart
-
 ynh_script_progression --message="Reloading nginx web server..."
+
 ynh_systemd_action --service_name=nginx --action=reload
 
 ynh_script_progression --message="Reloading postfix..."

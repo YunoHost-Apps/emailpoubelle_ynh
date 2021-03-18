@@ -26,16 +26,12 @@ db_user=emailPoubelle
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
 ynh_script_progression --message="Validating installation parameters..." --weight=1
+
 final_path=/var/www/$app
 test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
-# Normalize the url path syntax
-path_url=$(ynh_normalize_url_path $path_url)
-
-# Check web path availability
-ynh_webpath_available $domain $path_url
 # Register (book) web path
-ynh_webpath_register $app $domain $path_url
+ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 
 # Check user
 ynh_user_exists "$admin"
@@ -45,17 +41,17 @@ ynh_user_exists "$admin"
 #=================================================
 ynh_script_progression --message="Storing installation settings..." --weight=1
 
-ynh_app_setting_set $app domain $domain
-ynh_app_setting_set $app path $path_url
-ynh_app_setting_set $app admin $admin
-ynh_app_setting_set $app is_public $is_public
-ynh_app_setting_set $app db_name $db_user
-ynh_app_setting_set $app final_path $final_path
+ynh_app_setting_set --app=$app --key=domain --value=$domain
+ynh_app_setting_set --app=$app --key=path --value=$path_url
+ynh_app_setting_set --app=$app --key=admin --value=$admin
+ynh_app_setting_set --app=$app --key=db_name --value=$db_user
+ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 
 #=================================================
 #INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=15
+
 ynh_install_app_dependencies $pkg_dependencies
 
 #install locale (nginx will restart at the end of the install)
@@ -68,8 +64,8 @@ locale-gen
 #=================================================
 #INSTALL SOURCES
 #===============================================
-
 ynh_script_progression --message="Setting up source files..." --weight=5
+
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source "$final_path"
 cp ../conf/index_source.php $final_path/www/index.php
@@ -79,7 +75,6 @@ ynh_replace_string "Template-exemple" "$domain" $final_path/www/index.php
 ln -s $final_path/lang/fr $final_path/lang/fr_FR
 ln -s $final_path/lang/it $final_path/lang/it_IT
 ln -s $final_path/www/template-exemple $final_path/template-exemple
-
 
 #===============================================
 #SETTINGS & DATABASE
@@ -135,25 +130,35 @@ cp -a ../conf/$app.cron /etc/cron.d/$app
 chown root:root /etc/cron.d/$app
 chmod 644 /etc/cron.d/$app
 
-# Create a dedicated nginx config
-ynh_script_progression --message="Configuring nginx web server..." --weight=2
+#=================================================
+# NGINX CONFIGURATION
+#=================================================
+ynh_script_progression --message="Configuring NGINX web server..." --weight=2
+
 ynh_add_nginx_config
 
 #=================================================
 # SETUP SSOWAT
 #=================================================
+ynh_script_progression --message="Configuring permissions..." --weight=1
 
 # Make app public if necessary
 if [ $is_public -eq 1 ]
 then
-	# unprotected_uris allows SSO credentials to be passed anyway.
-	ynh_app_setting_set $app unprotected_uris "/"
+	ynh_permission_update --permission="main" --add="visitors"
 fi
 
 #=================================================
 # RELOAD SERVICES
 #=================================================
+ynh_script_progression --message="Reloading NGINX web server..." --weight=1
+
 ynh_systemd_action --service_name=nginx --action=reload
 ynh_systemd_action --service_name=postfix --action=reload
 service php* reload
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
 ynh_script_progression --message="Installation of $app completed" --last

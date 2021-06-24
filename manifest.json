@@ -14,7 +14,7 @@
         "email": "misterl56@hotmail.com"
     },
         "requirements": {
-        "yunohost": ">= 3.5.2"
+        "yunohost": ">= 4.1"
     },
     "multi_instance": false,
     "services": [

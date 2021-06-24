@@ -77,8 +77,6 @@ ynh_abort_if_errors
 # CHECK THE PATH
 #=================================================
 # Normalize the URL path syntax
-path_url=$(ynh_normalize_url_path $path_url)
-
 
 #=================================================
 #check for matlink's version - DEPRECATED - uninstall & reinstall

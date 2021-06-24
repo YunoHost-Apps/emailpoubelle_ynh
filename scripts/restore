@@ -7,11 +7,7 @@
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
-#if [ ! -e _common.sh ]; then
-#	# Get the _common.sh file if it's not in the current directory
-#	cp ../settings/scripts/_common.sh ./_common.sh
-#	chmod a+rx _common.sh
-#fi
+
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
@@ -86,7 +82,6 @@ for i in $lang ; do
  ynh_replace_string "# $i" "$i" /etc/locale.gen
 done
 locale-gen
-
 
 #=================================================
 # RESTORE POSTFIX ALIASES

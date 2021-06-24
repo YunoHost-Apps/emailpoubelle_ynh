@@ -107,7 +107,7 @@ chmod 400 "$final_path/conf.php"
 
 #setting postfix to use virtual aliases file
 # Add postfix configuration hook and regen postfix conf
-ynh_add_config --template="../sources/hooks/conf_regen/98-postfix_emailpoubelle" --destination="/usr/share/yunohost/hooks/conf_regen/"
+cp -R ../sources/hooks/conf_regen/98-postfix_emailpoubelle /usr/share/yunohost/hooks/conf_regen/
 yunohost tools regen-conf postfix
 
 #create the virtual aliases file 

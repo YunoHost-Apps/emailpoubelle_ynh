@@ -5,21 +5,22 @@
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
+
 source _common.sh
 source /usr/share/yunohost/helpers
-
 
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..."
+ynh_script_progression --message="Loading installation settings..." --weight=1
+
 app=$YNH_APP_INSTANCE_NAME
-domain=$(ynh_app_setting_get $app domain)
-path_url=$(ynh_app_setting_get $app path)
-is_public=$(ynh_app_setting_get --app=$app --key=is_public)
-admin=$(ynh_app_setting_get $app admin)
-final_path=$(ynh_app_setting_get $app final_path)
-db_name=$(ynh_app_setting_get $app db_name)
+
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+path_url=$(ynh_app_setting_get --app=$app --key=path)
+admin=$(ynh_app_setting_get --app=$app --key=admin)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 
 #=================================================
 # CHECK VERSION
@@ -54,69 +55,25 @@ fi
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
-ynh_script_progression --message="Backing up the app before upgrading (may take a while)..."
+ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=1
+
 # Backup the current version of the app
 ynh_backup_before_upgrade
 ynh_clean_setup () {
-	# restore it if the upgrade fails
-	ynh_restore_upgradebackup
+  # Restore it if the upgrade fails
+  ynh_restore_upgradebackup
 }
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
-
-#=================================================
-#check for matlink's version - DEPRECATED - uninstall & reinstall
-#=================================================
-#deprecated - not maintained for more than a year...
-#cat /etc/yunohost/apps/$app/status.json | grep "matlink"
-#if [[ $?==0 ]]; then
-  #add missing info in settings
-#  final_path=/var/www/$app
-#  db_name=emailPoubelle
-#  ynh_app_setting_set $app db_name $db_name
-#  ynh_app_setting_set $app final_path $final_path
-  #install geoip dependencies
-#  ynh_install_app_dependencies $pkg_dependencies
-  #install locale packages
-#  for i in $lang ; do
-#    ynh_replace_string "# $i" "$i" /etc/locale.gen
-#  done
-#  locale-gen
-  #change folder locale => lang as per src2.0
-#  rm -rf $final_path/locale
-#  mkdir -p $final_path/lang
-  #add new index.php
-#  cp ../conf/index_source.php $final_path/www/index.php
-  #switch from previous (modified) conf.php to new one (emailpoubelle original)
-#  cp ../src/conf-dist.php $final_path/conf-dist.new.php
-  #insert domain in line 24, DB in line 31, DBUSER in line 32, etc.
-#  rep=$(cat $final_path/conf.php | grep "^[^//]" | grep "define('DOMAIN',")
-#  sed -i "24s/.*/${rep}/" $final_path/conf-dist.new.php
-#  rep=$(cat $final_path/conf.php | grep "^[^//]" | grep "define('DB',")
-#  sed -i "31s/.*/${rep}/" $final_path/conf-dist.new.php
-#  rep=$(cat $final_path/conf.php | grep "^[^//]" | grep "define('DBUSER',")
-#  sed -i "32s/.*/${rep}/" $final_path/conf-dist.new.php
-#  rep=$(cat $final_path/conf.php | grep "^[^//]" | grep "define('DBPASS',")
-#  sed -i "33s/.*/${rep}/" $final_path/conf-dist.new.php
-  #replace old conf and process with install command
-#  mv $final_path/conf.php $final_path/conf.php.old 
-#  mv $final_path/conf-dist.new.php $final_path/conf.php
-#  ynh_replace_string "define('DB', 'sqlite:'" "//define('DB', 'sqlite:'" $final_path/conf.php
-#  ynh_replace_string "define('ALIASLIMITBYMAIL" "//define('ALIASLIMITBYMAIL" $final_path/conf.php
-#  #setting conf file not world-readable (dude, there is a plain-text password !)
-#  sudo chmod o-r $final_path/conf.php
-#fi
 
 #=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Upgrading nginx web server configuration..."
+ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=1
 
-ynh_backup_if_checksum_is_different "/etc/nginx/conf.d/$domain.d/$app.conf"
-
-# Create a dedicated nginx config
+# Create a dedicated NGINX config
 ynh_add_nginx_config
 
 #=================================================
@@ -142,8 +99,8 @@ fi
 #=================================================
 #INSTALL SOURCES
 #===============================================
-
 ynh_script_progression --message="Upgrading source files..."
+
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source "$final_path"
 cp ../conf/index_source.php $final_path/www/index.php

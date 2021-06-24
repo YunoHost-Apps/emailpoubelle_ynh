@@ -60,8 +60,6 @@ ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=15
 
-ynh_install_app_dependencies $pkg_dependencies
-
 #install locale (nginx will restart at the end of the install)
 for i in $lang ; do
  ynh_replace_string "# $i" "$i" /etc/locale.gen
@@ -104,7 +102,6 @@ ynh_add_config --template="../conf/conf-dist.php" --destination="$final_path/con
 chmod 400 "$final_path/conf.php"
 #chown $app:$app "$final_path/conf.php"
 
-
 #setting postfix to use virtual aliases file
 # Add postfix configuration hook and regen postfix conf
 cp -R ../sources/hooks/conf_regen/98-postfix_emailpoubelle /usr/share/yunohost/hooks/conf_regen/
@@ -131,6 +128,15 @@ chmod 644 /etc/cron.d/$app
 ynh_script_progression --message="Configuring NGINX web server..." --weight=1
 
 ynh_add_nginx_config
+
+#=================================================
+# PHP-FPM CONFIGURATION
+#=================================================
+ynh_script_progression --message="Configuring PHP-FPM..." --weight=2
+
+# Create a dedicated PHP-FPM config
+ynh_add_fpm_config --package="$extra_php_dependencies"
+phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 
 #=================================================
 # SETUP SSOWAT

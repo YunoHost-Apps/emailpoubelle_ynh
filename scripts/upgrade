@@ -21,6 +21,7 @@ path_url=$(ynh_app_setting_get --app=$app --key=path)
 admin=$(ynh_app_setting_get --app=$app --key=admin)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 
 #=================================================
 # CHECK VERSION
@@ -77,11 +78,12 @@ ynh_script_progression --message="Upgrading NGINX web server configuration..." -
 ynh_add_nginx_config
 
 #=================================================
-# UPGRADE DEPENDENCIES
+# PHP-FPM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Upgrading dependencies..."
+ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=2
 
-ynh_install_app_dependencies $pkg_dependencies
+# Create a dedicated PHP-FPM config
+ynh_add_fpm_config --package="$extra_php_dependencies"
 
 #=================================================
 #INSTALL SOURCES
@@ -98,14 +100,12 @@ fi
 
 #Temporaire - mettre en config
 if [ ! -e $final_path/lang/fr_FR ]; then
-ln -s $final_path/lang/fr $final_path/lang/fr_FR
+  ln -s $final_path/lang/fr $final_path/lang/fr_FR
 fi
 if [ ! -e $final_path/lang/it_IT ]; then
-ln -s $final_path/lang/it $final_path/lang/it_IT
+  ln -s $final_path/lang/it $final_path/lang/it_IT
 fi
 
-#setting postfix to use virtual aliases file
-# Add postfix configuration hook and regen postfix conf
 #setting postfix to use virtual aliases file
 # Add postfix configuration hook and regen postfix conf
 cp -R ../sources/hooks/conf_regen/98-postfix_emailpoubelle /usr/share/yunohost/hooks/conf_regen/
@@ -123,12 +123,16 @@ chown root:root /etc/cron.d/$app
 # RELOAD SERVICES
 #=================================================
 ynh_script_progression --message="Starting a systemd service..."
-ynh_systemd_action --service_name=php7.0-fpm --action=restart
+ynh_systemd_action --service_name=php$phpversion-fpm --action=reload
 
 ynh_script_progression --message="Reloading nginx web server..."
 ynh_systemd_action --service_name=nginx --action=reload
 
 ynh_script_progression --message="Reloading postfix..."
 ynh_systemd_action --service_name=postfix --action=reload
+
+#=================================================
+# END OF SCRIPT
+#=================================================
 
 ynh_script_progression --message="Upgrade of $app completed" --last

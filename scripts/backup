@@ -74,4 +74,4 @@ ynh_backup "/usr/share/yunohost/hooks/conf_regen/98-postfix_emailpoubelle"
 # END OF SCRIPT
 #=================================================
 
-ynh_print_info --message="Backup script completed for $app. (YunoHost will then actually copy those files to the archive)." --last
+ynh_print_info --message="Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."

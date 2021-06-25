@@ -77,38 +77,13 @@ ln -s $final_path/www/template-exemple $final_path/template-exemple
 
 
 #===============================================
-#SETTINGS & DATABASE
+# ADD A CONFIGURATION
 #===============================================
-ynh_script_progression --message="Setting database & settings..."
+ynh_script_progression --message="Adding a configuration file..."
 
-#generating random password for database
-ynh_print_OFF
-db_pwd=$(ynh_string_random)
-ynh_app_setting_set $app mysqlpwd $db_pwd
-ynh_print_ON
-
-#configuring with given settings
-cp $final_path/conf-dist.php $final_path/conf.php
-#Update various conf : domain, database, user and password
-ynh_replace_string "exemple.fr"                  "$domain"                    $final_path/conf.php
-ynh_replace_string "exemple.com"                 "$domain"                    $final_path/conf.php
-ynh_replace_string "define('DB', 'sqlite:'"      "//define('DB', 'sqlite:'"   $final_path/conf.php
-ynh_replace_string "define('ALIASLIMITBYMAIL"    "//define('ALIASLIMITBYMAIL" $final_path/conf.php
-ynh_replace_string "//      define('DB', 'mysql" "      define('DB', 'mysql"  $final_path/conf.php
-ynh_replace_string "//      define('DBUSER',"    "        define('DBUSER',"   $final_path/conf.php
-ynh_replace_string "//      define('DBPASS',"    "        define('DBPASS',"   $final_path/conf.php
-ynh_replace_string "baseMysql"                   "$db_user"                   $final_path/conf.php
-ynh_replace_string "utilisateurMysql"            "$db_user"                   $final_path/conf.php
-ynh_print_OFF
-ynh_replace_string "motdepassedefou"             "$db_pwd"                    $final_path/conf.php
-ynh_replace_string "define('ADMIN_PASSWORD', 'admin');" "define('ADMIN_PASSWORD', '$password');" $final_path/conf.php
-ynh_print_ON
-#setting conf file not world-readable (dude, there is a plain-text password !)
-chmod o-r $final_path/conf.php
-#initialize database (databasename = db_user)
-ynh_print_OFF
-ynh_mysql_create_db $db_user $db_user $db_pwd 
-ynh_print_ON
+ynh_add_config --template="../conf/conf-dist.php" --destination="$final_path/conf.php"
+chmod 400 "$final_path/conf.php"
+#chown $app:$app "$final_path/conf.php"
 
 #setting postfix to use virtual aliases file
 # Add postfix configuration hook and regen postfix conf
@@ -126,7 +101,7 @@ echo "devnull:/dev/null" | tee -a /etc/aliases
 newaliases
 
 #adding cronjob for removing expired email addresses
-cp -a ../conf/$app.cron /etc/cron.d/$app
+ ynh_add_config --template="../conf/emailpoubelle.cron" --destination="/etc/cron.d/$app"
 chown root:root /etc/cron.d/$app
 chmod 644 /etc/cron.d/$app
 

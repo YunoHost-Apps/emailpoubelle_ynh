@@ -38,7 +38,6 @@ db_name=$(ynh_app_setting_get $app db_name)
 #=================================================
 # BACKUP THE APP MAIN DIR
 #=================================================
-ynh_print_info --message="Backing up the main app directory..."
 
 ynh_backup --src_path="$final_path"
 

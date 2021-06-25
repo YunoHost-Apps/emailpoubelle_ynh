@@ -52,7 +52,7 @@ ynh_app_setting_set $app final_path $final_path
 #INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=15
-ynh_install_app_dependencies $pkg_dependencies
+ynh_install_app_dependencies $extra_php_dependencies
 
 #install locale (nginx will restart at the end of the install)
 for i in $lang ; do

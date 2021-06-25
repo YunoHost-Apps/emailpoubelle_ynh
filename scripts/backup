@@ -63,7 +63,6 @@ ynh_backup --src_path="/etc/cron.d/$app"
 #=================================================
 # BACKUP postfix conf
 #=================================================
-ynh_print_info --message="Backing up postfix conf configuration..."
 
 ynh_backup "/usr/share/yunohost/hooks/conf_regen/98-postfix_emailpoubelle"
 

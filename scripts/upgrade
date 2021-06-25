@@ -202,7 +202,7 @@ chown root:root /etc/cron.d/$app
 # RELOAD SERVICES
 #=================================================
 ynh_script_progression --message="Starting a systemd service..."
-ynh_systemd_action --service_name=php7.0-fpm --action=restart
+ynh_systemd_action --service_name=php$phpversion-fpm --action=restart
 
 ynh_script_progression --message="Reloading nginx web server..."
 ynh_systemd_action --service_name=nginx --action=reload

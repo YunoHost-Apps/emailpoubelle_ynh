@@ -68,6 +68,14 @@ if ynh_legacy_permissions_exists; then
 fi
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
+
+# Create a dedicated user (if not existing)
+ynh_system_user_create --username=$app --home_dir="$final_path"
+
+#=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
 # NGINX CONFIGURATION
@@ -112,11 +120,9 @@ cp -R ../sources/hooks/conf_regen/98-postfix_emailpoubelle /usr/share/yunohost/h
 mv /etc/postfix/main.cf /etc/postfix/main.cf.emailpoubelle.bak
 yunohost tools regen-conf postfix -f
 
-#=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-
-chown -R www-data:www-data $final_path
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:www-data "$final_path"
 
 #=================================================
 # RELOAD SERVICES

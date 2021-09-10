@@ -85,4 +85,16 @@ yunohost tools regen-conf postfix
 ynh_systemd_action --service_name=nginx --action=reload
 ynh_systemd_action --service_name=postfix --action=reload
 
-ynh_script_progression --message="Removal of $app completed"
+#=================================================
+# REMOVE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Removing the dedicated system user..."
+
+# Delete a system user
+ynh_system_user_delete --username=$app
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Removal of $app completed" --last

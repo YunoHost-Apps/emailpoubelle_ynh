@@ -63,6 +63,14 @@ done
 locale-gen
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Configuring system user..." --weight=1
+
+# Create a system user
+ynh_system_user_create --username=$app --home_dir="$final_path"
+
+#=================================================
 #INSTALL SOURCES
 #===============================================
 ynh_script_progression --message="Setting up source files..." --weight=5
@@ -77,9 +85,9 @@ ln -s $final_path/lang/fr $final_path/lang/fr_FR
 ln -s $final_path/lang/it $final_path/lang/it_IT
 ln -s $final_path/www/template-exemple $final_path/template-exemple
 
-#chmod 750 "$final_path"
-#chmod -R o-rwx "$final_path"
-#chown -R $app:www-data "$final_path"
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:www-data "$final_path"
 
 #=================================================
 # CREATE A MYSQL DATABASE
@@ -109,7 +117,6 @@ yunohost tools regen-conf postfix
 #create the virtual aliases file 
 touch $final_path/var/virtual
 postmap $final_path/var/virtual
-chown -R www-data:www-data $final_path
 
 #create an alias for deleted junk adresses
 cp /etc/aliases /etc/aliases.emailpoubelle.bak #backup it 

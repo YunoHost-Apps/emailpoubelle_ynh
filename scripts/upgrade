@@ -63,30 +63,8 @@ fi
 # Cleaning legacy permissions
 if ynh_legacy_permissions_exists; then
   ynh_legacy_permissions_delete_all
+
   ynh_app_setting_delete --app=$app --key=is_public
-fi
-
-#=================================================
-# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
-#=================================================
-ynh_script_progression --message="Backing up the app before upgrading (may take a while)..."
-# Backup the current version of the app
-ynh_backup_before_upgrade
-ynh_clean_setup () {
-	# restore it if the upgrade fails
-	ynh_restore_upgradebackup
-}
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
-# Migrate legacy permissions to new system
-#=================================================
-if ynh_legacy_permissions_exists
-then
-	ynh_legacy_permissions_delete_all
-
-	ynh_app_setting_delete --app=$app --key=is_public
 fi
 
 #=================================================
@@ -139,18 +117,14 @@ yunohost tools regen-conf postfix -f
 #=================================================
 
 chown -R www-data:www-data $final_path
-chown root:root /etc/cron.d/$app
 
 #=================================================
 # RELOAD SERVICES
 #=================================================
-ynh_script_progression --message="Starting a systemd service..."
+ynh_script_progression --message="Reloading NGINX web server..."
+
 ynh_systemd_action --service_name=php$phpversion-fpm --action=reload
-
-ynh_script_progression --message="Reloading nginx web server..."
 ynh_systemd_action --service_name=nginx --action=reload
-
-ynh_script_progression --message="Reloading postfix..."
 ynh_systemd_action --service_name=postfix --action=reload
 
 #=================================================

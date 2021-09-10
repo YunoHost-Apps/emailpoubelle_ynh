@@ -30,14 +30,13 @@ path_url=$(ynh_app_setting_get $app path)
 final_path=$(ynh_app_setting_get $app final_path)
 db_name=$(ynh_app_setting_get $app db_name)
 admin=$(ynh_app_setting_get $app admin)
+phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
 #=================================================
 ynh_script_progression --message="Validating restoration parameters..." --weight=1
 
-ynh_webpath_available $domain $path_url \
-	|| ynh_die "Path not available: ${domain}${path_url}"
 test ! -d $final_path \
 	|| ynh_die "There is already a directory: $final_path "
 
@@ -114,7 +113,7 @@ ynh_restore_file "/etc/cron.d/$app"
 #=================================================
 # RELOAD NGINX & ALIASES
 #=================================================
-ynh_script_progression --message="Reloading nginx web server and php-fpm..." --weight=1
+ynh_script_progression --message="Reloading NGINX web server and PHP-FPM..." --weight=1
 
 postmap $final_path/var/virtual
 ynh_systemd_action --service_name=php$phpversion-fpm --action=reload

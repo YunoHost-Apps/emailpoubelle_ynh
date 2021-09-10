@@ -24,12 +24,8 @@ ynh_abort_if_errors
 domain=$YNH_APP_ARG_DOMAIN
 path_url=$YNH_APP_ARG_PATH
 admin=$YNH_APP_ARG_ADMIN
-ynh_print_OFF
 password=$YNH_APP_ARG_PASSWORD
-ynh_print_ON
 is_public=$YNH_APP_ARG_IS_PUBLIC
-final_path=/var/www/$app
-db_user=emailPoubelle
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -52,7 +48,6 @@ ynh_script_progression --message="Storing installation settings..." --weight=1
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
 ynh_app_setting_set --app=$app --key=admin --value=$admin
-ynh_app_setting_set --app=$app --key=db_name --value=$db_user
 ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 
 #=================================================
@@ -81,6 +76,10 @@ ynh_replace_string "Template-exemple" "$domain" $final_path/www/index.php
 ln -s $final_path/lang/fr $final_path/lang/fr_FR
 ln -s $final_path/lang/it $final_path/lang/it_IT
 ln -s $final_path/www/template-exemple $final_path/template-exemple
+
+#chmod 750 "$final_path"
+#chmod -R o-rwx "$final_path"
+#chown -R $app:www-data "$final_path"
 
 #=================================================
 # CREATE A MYSQL DATABASE
@@ -119,7 +118,7 @@ newaliases
 
 #adding cronjob for removing expired email addresses
 ynh_add_config --template="../conf/emailpoubelle.cron" --destination="/etc/cron.d/$app"
-chown root:root /etc/cron.d/$app
+chown root: /etc/cron.d/$app
 chmod 644 /etc/cron.d/$app
 
 #=================================================
@@ -152,6 +151,7 @@ fi
 #=================================================
 # RELOAD SERVICES
 #=================================================
+
 ynh_systemd_action --service_name=nginx --action=reload
 ynh_systemd_action --service_name=postfix --action=reload
 ynh_systemd_action --service_name=php$phpversion-fpm --action=reload

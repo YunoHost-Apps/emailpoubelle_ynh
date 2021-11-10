@@ -7,11 +7,7 @@
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
-#if [ ! -e _common.sh ]; then
-#	# Get the _common.sh file if it's not in the current directory
-#	cp ../settings/scripts/_common.sh ./_common.sh
-#	chmod a+rx _common.sh
-#fi
+
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
@@ -64,7 +60,7 @@ ynh_backup --src_path="/etc/cron.d/$app"
 # BACKUP postfix conf
 #=================================================
 
-ynh_backup "/usr/share/yunohost/hooks/conf_regen/98-postfix_emailpoubelle"
+ynh_backup --src_path="/usr/share/yunohost/hooks/conf_regen/98-postfix_emailpoubelle"
 
 #=================================================
 # END OF SCRIPT

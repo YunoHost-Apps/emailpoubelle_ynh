@@ -5,34 +5,38 @@
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
+
 source _common.sh
 source /usr/share/yunohost/helpers
 
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
 
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
 path_url=$YNH_APP_ARG_PATH
 admin=$YNH_APP_ARG_ADMIN
-ynh_print_OFF
 password=$YNH_APP_ARG_PASSWORD
-ynh_print_ON
 is_public=$YNH_APP_ARG_IS_PUBLIC
-final_path=/var/www/$app
-db_user=emailPoubelle
 
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
 ynh_script_progression --message="Validating installation parameters..." --weight=1
-final_path=/var/www/$app
-test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
-# Check web path availability
-ynh_webpath_available $domain $path_url
+final_path=/var/www/$app
+test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
+
 # Register (book) web path
-ynh_webpath_register $app $domain $path_url
+ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 
 # Check user
 ynh_user_exists "$admin"
@@ -42,11 +46,9 @@ ynh_user_exists "$admin"
 #=================================================
 ynh_script_progression --message="Storing installation settings..." --weight=1
 
-ynh_app_setting_set $app domain $domain
-ynh_app_setting_set $app path $path_url
-ynh_app_setting_set $app admin $admin
-ynh_app_setting_set $app db_name $db_user
-ynh_app_setting_set $app final_path $final_path
+ynh_app_setting_set --app=$app --key=domain --value=$domain
+ynh_app_setting_set --app=$app --key=path --value=$path_url
+ynh_app_setting_set --app=$app --key=admin --value=$admin
 
 #=================================================
 #INSTALL DEPENDENCIES
@@ -63,8 +65,8 @@ locale-gen
 #=================================================
 #INSTALL SOURCES
 #===============================================
-
 ynh_script_progression --message="Setting up source files..." --weight=5
+
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source "$final_path"
 cp ../conf/index_source.php $final_path/www/index.php
@@ -117,8 +119,8 @@ chmod 644 /etc/cron.d/$app
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
+ynh_script_progression --message="Configuring NGINX web server..." --weight=1
 
-ynh_script_progression --message="Configuring nginx web server..." --weight=1
 ynh_add_nginx_config
 
 #=================================================
@@ -127,12 +129,13 @@ ynh_add_nginx_config
 ynh_script_progression --message="Configuring PHP-FPM..." --weight=2
 
 # Create a dedicated PHP-FPM config
-ynh_add_fpm_config
+ynh_add_fpm_config --package="$extra_php_dependencies"
 phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 
 #=================================================
 # SETUP SSOWAT
 #=================================================
+ynh_script_progression --message="Configuring permissions..." --weight=1
 
 # Make app public if necessary
 if [ "$is_public" -eq 1 ]
@@ -144,6 +147,8 @@ fi
 #=================================================
 # RELOAD SERVICES
 #=================================================
+ynh_script_progression --message="Reloading NGINX web server..." --weight=2
+
 ynh_systemd_action --service_name=nginx --action=reload
 ynh_systemd_action --service_name=postfix --action=reload
 ynh_systemd_action --service_name=php$phpversion-fpm --action=reload
@@ -151,4 +156,5 @@ ynh_systemd_action --service_name=php$phpversion-fpm --action=reload
 #=================================================
 # END OF SCRIPT
 #=================================================
+
 ynh_script_progression --message="Installation of $app completed" --last

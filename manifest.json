@@ -14,7 +14,7 @@
         "email": "misterl56@hotmail.com"
     },
         "requirements": {
-        "yunohost": ">= 4.2.0"
+        "yunohost": ">= 4.2.8"
     },
     "multi_instance": false,
     "services": [
@@ -28,8 +28,7 @@
         "install" : [
             {
                 "name": "domain",
-                "type": "domain",
-                "example": "domain.org"
+                "type": "domain"
             },
             {
                 "name": "path",
@@ -40,7 +39,6 @@
             {
                 "name": "admin",
                 "type": "user",
-                "example": "homer",
                 "help": {
                 	"en": "Admin user can access to the control panel, block and remove all redirection and reset any settings",
                 	"fr": "L'administrateur peut accéder au panneau de controle, bloquer et supprimer les redirections ainsi que réinitialiser les réglages"
@@ -48,8 +46,7 @@
             },
             {
                 "name": "password",
-                "type": "password",
-                "example": "AveryStrongPassword"
+                "type": "password"
             },
             {
                 "name": "is_public",

@@ -27,6 +27,8 @@ admin=$YNH_APP_ARG_ADMIN
 password=$YNH_APP_ARG_PASSWORD
 is_public=$YNH_APP_ARG_IS_PUBLIC
 
+app=$YNH_APP_INSTANCE_NAME
+
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================

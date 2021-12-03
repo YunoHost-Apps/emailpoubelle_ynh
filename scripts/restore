@@ -35,8 +35,7 @@ admin=$(ynh_app_setting_get --app=$app --key=admin)
 #=================================================
 ynh_script_progression --message="Validating restoration parameters..." --weight=1
 
-test ! -d $final_path \
-	|| ynh_die "There is already a directory: $final_path "
+test ! -d $final_path || ynh_die "There is already a directory: $final_path "
 
 # Check user
 ynh_user_exists "$admin"
@@ -63,8 +62,6 @@ ynh_restore_file --origin_path="$final_path"
 ynh_script_progression --message="Reconfiguring PHP-FPM..." --weight=5
 
 ynh_restore_file --origin_path="/etc/php/$phpversion/fpm/pool.d/$app.conf"
-
-ynh_add_fpm_config --package="$extra_php_dependencies"
 
 #=================================================
 # RESTORE THE MYSQL DATABASE

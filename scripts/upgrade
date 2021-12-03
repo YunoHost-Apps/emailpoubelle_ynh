@@ -87,19 +87,6 @@ ynh_script_progression --message="Upgrading dependencies..."
 ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
-#UPDATE SETTINGS
-#=================================================
-
-#mysqlpwd setting was implemented in ynh2 - check if saved and if not implement
-db_pass=$(ynh_app_setting_get $app mysqlpwd)
-if [ -z $db_pass ]; then
-#c'est moche mais ça fera bien l'affaire - en deux lignes sinon pb en fonction du type de shell
-  t=$(cat /var/www/$app/conf.php | grep DBPASS)
-  db_pass=${t:26:24}
-  ynh_app_setting_set $app mysqlpwd $db_pass
-fi
-
-#=================================================
 #INSTALL SOURCES
 #===============================================
 ynh_script_progression --message="Upgrading source files..."

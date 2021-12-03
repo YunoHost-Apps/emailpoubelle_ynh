@@ -58,11 +58,6 @@ ynh_script_progression --message="Installing dependencies..." --weight=1
 
 ynh_install_app_dependencies $pkg_dependencies
 
-#=================================================
-#INSTALL DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=15
-
 #install locale (nginx will restart at the end of the install)
 for i in $lang ; do
  ynh_replace_string "# $i" "$i" /etc/locale.gen

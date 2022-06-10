@@ -50,7 +50,7 @@ define('CRON', false);
 define('FICHIERALIAS', DATA.'/virtual');
 define('BIN_POSTMAP', '/usr/sbin/postmap');
 
-define('URLPAGE', 'http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]);
+define('URLPAGE', 'https://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]);
 
 // Email 
 define('EMAILTAGSUJET', '[EmailPoubelle]');

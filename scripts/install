@@ -59,7 +59,7 @@ ynh_install_app_dependencies $pkg_dependencies
 
 #install locale (nginx will restart at the end of the install)
 for i in $lang ; do
- ynh_replace_string "# $i" "$i" /etc/locale.gen
+	ynh_replace_string --match_string="# $i" --replace_string="$i" --target_file="/etc/locale.gen"
 done
 
 locale-gen
@@ -91,23 +91,13 @@ ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$final_path"
 ynh_add_config --template="../conf/index_source.php" --destination="$final_path/www/index.php"
+ynh_secure_remove --file="$final_path/www/admin.php"
 
-#Temporaire - mettre en config
-ln -s $final_path/lang/fr $final_path/lang/fr_FR
-ln -s $final_path/lang/it $final_path/lang/it_IT
-ln -s $final_path/www/template-exemple $final_path/template-exemple
+ln -s $final_path/lib $final_path/www/lib
 
 chmod 750 "$final_path"
 chmod -R o-rwx "$final_path"
 chown -R $app:www-data "$final_path"
-
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Configuring NGINX web server..."
-
-# Create a dedicated NGINX config
-ynh_add_nginx_config
 
 #=================================================
 # PHP-FPM CONFIGURATION
@@ -145,7 +135,7 @@ yunohost tools regen-conf postfix
 # Create the virtual aliases file 
 touch $final_path/var/virtual
 postmap $final_path/var/virtual
-chown -R www-data:www-data $final_path
+chown -R $app:www-data "$final_path"
 
 # Create an alias for deleted junk adresses
 cp /etc/aliases /etc/aliases.emailpoubelle.bak #backup it 

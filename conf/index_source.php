@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <meta name="description" content="">
 <meta name="robots" content="index,follow,noarchive">
-<link rel="stylesheet" href="__DOMAIN__/style.css">
-<!--[if IE]><script src="__DOMAIN__/html5-ie.js"></script><![endif]--> 
+<link rel="stylesheet" href="__PATH__/template-exemple/style.css">
+<!--[if IE]><script src="__PATH__/template-exemple/html5-ie.js"></script><![endif]--> 
 </head>
 <body>
 <!--[if lte IE 6]> 
@@ -16,7 +16,7 @@
 <![endif]-->  
 	<div id="a">
 		<header>
-			<a href="/" title="Startseite"><strong>EmailPoubelle</strong> </a>
+			<a href="__PATH__/" title="Startseite"><strong>EmailPoubelle</strong> </a>
 		</header>
 		<div id="b">
 			<article style="float:left">

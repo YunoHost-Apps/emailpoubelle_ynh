@@ -106,18 +106,11 @@ then
 	# Download, check integrity, uncompress and patch the source from app.src
 	ynh_setup_source --dest_dir="$final_path" --keep="conf.php"
 	ynh_add_config --template="../conf/index_source.php" --destination="$final_path/www/index.php"
+	ynh_secure_remove --file="$final_path/www/admin.php"
 
-	test -e $final_path/template-exemple
+	test -e $final_path/www/lib
 	if [[ ! $? -eq 0 ]]; then
-		ln -s $final_path/www/template-exemple $final_path/template-exemple
-	fi
-
-	#Temporaire - mettre en config
-	if [ ! -e $final_path/lang/fr_FR ]; then
-		ln -s $final_path/lang/fr $final_path/lang/fr_FR
-	fi
-	if [ ! -e $final_path/lang/it_IT ]; then
-		ln -s $final_path/lang/it $final_path/lang/it_IT
+		ln -s $final_path/lib $final_path/www/lib
 	fi
 fi
 

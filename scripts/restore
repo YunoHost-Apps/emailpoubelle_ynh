@@ -72,7 +72,7 @@ ynh_install_app_dependencies $pkg_dependencies
 
 #Check & regen local
 for i in $lang ; do
- ynh_replace_string "# $i" "$i" /etc/locale.gen
+	ynh_replace_string --match_string="# $i" --replace_string="$i" --target_file="/etc/locale.gen"
 done
 locale-gen
 

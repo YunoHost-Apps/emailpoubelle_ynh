@@ -103,7 +103,7 @@ then
 	ynh_script_progression --message="Upgrading source files..."
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path" --keep="conf.php"
+	ynh_setup_source --dest_dir="$final_path" --keep="conf.php www/index.php"
 	ynh_add_config --template="../conf/index_source.php" --destination="$final_path/www/index.php"
 	ynh_secure_remove --file="$final_path/www/admin.php"
 

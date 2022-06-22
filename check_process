@@ -27,4 +27,4 @@ Notification=none
 ;;; Upgrade options
 	; commit=1d375c45011ad5ab92c038120c7275580479fbc6
 		name=2.0~ynh3
-		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&password=pass&public_site=0
+		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&password=pass&public_site=Yes&

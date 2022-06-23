@@ -107,10 +107,7 @@ then
 	ynh_add_config --template="../conf/index_source.php" --destination="$final_path/www/index.php"
 	ynh_secure_remove --file="$final_path/www/admin.php"
 
-	test -e $final_path/www/lib
-	if [[ ! $? -eq 0 ]]; then
-		ln -s $final_path/lib $final_path/www/lib
-	fi
+	ln -s $final_path/lib $final_path/www/lib
 fi
 
 chmod 750 "$final_path"

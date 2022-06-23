@@ -13,8 +13,6 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
-		# 2.0~ynh3
-		upgrade=1	from_commit=1d375c45011ad5ab92c038120c7275580479fbc6
 		# 2.0~ynh5
 		upgrade=1	from_commit=d83328c3e0d7dbbc317ded2924ac08ba3cc51d3e
 		backup_restore=1
@@ -24,7 +22,3 @@
 ;;; Options
 Email=
 Notification=none
-;;; Upgrade options
-	; commit=1d375c45011ad5ab92c038120c7275580479fbc6
-		name=2.0~ynh3
-		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&password=pass&public_site=Yes&

@@ -73,16 +73,12 @@ if [ -z "$final_path" ]; then
 fi
 
 if [ -z $db_pwd ]; then
-#c'est moche mais ça fera bien l'affaire - en deux lignes sinon pb en fonction du type de shell
-  t=$(cat $final_path/conf.php | grep DBPASS)
-  db_pwd=${t:26:24}
+  db_pwd=$(grep DBPASS $final_path/conf.php | cut -d"'" -f4)
   ynh_app_setting_set --app=$app --key=mysqlpwd --value=$db_pwd
 fi
 
 if [ -z $password ]; then
-#c'est moche mais ça fera bien l'affaire - en deux lignes sinon pb en fonction du type de shell
-  t=$(cat $final_path/conf.php | grep ADMIN_PASSWORD)
-  password=${t:26:24}
+  password=$(grep ADMIN_PASSWORD $final_path/conf.php | cut -d"'" -f4)
   ynh_app_setting_set --app=$app --key=password --value=$password
 fi
 

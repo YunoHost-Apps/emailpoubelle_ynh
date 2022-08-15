@@ -24,6 +24,7 @@ All thanks to David.
 
 **Shipped version:** 2022.06.08~ynh1
 
+
 **Demo:** https://poubelle.zici.fr
 ## Disclaimers / important information
 

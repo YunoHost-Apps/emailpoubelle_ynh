@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<title>emailPoubelle - Template-exemple</title>
+<title>emailPoubelle - __DOMAIN__</title>
 <meta charset="UTF-8">
 <meta name="description" content="">
 <meta name="robots" content="index,follow,noarchive">
-<link rel="stylesheet" href="template-exemple/style.css">
-<!--[if IE]><script src="template-exemple/html5-ie.js"></script><![endif]--> 
+<link rel="stylesheet" href="__PATH__/template-exemple/style.css">
+<!--[if IE]><script src="__PATH__/template-exemple/html5-ie.js"></script><![endif]--> 
 </head>
 <body>
 <!--[if lte IE 6]> 
@@ -16,7 +16,7 @@
 <![endif]-->  
 	<div id="a">
 		<header>
-			<a href="/" title="Startseite"><strong>EmailPoubelle</strong> </a>
+			<a href="__PATH__/" title="Startseite"><strong>EmailPoubelle</strong> </a>
 		</header>
 		<div id="b">
 			<article style="float:left">

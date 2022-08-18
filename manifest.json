@@ -6,15 +6,21 @@
         "en": "Create throwable email address redirected to your real one",
         "fr": "Créez des adresses email jetables qui redirigent les mails vers votre adresse réelle"
     },
+    "version": "2022.06.08~ynh1",
     "url": "https://framagit.org/kepon/emailPoubellePhp/",
-    "version": "2.0~ynh5",
+    "upstream": {
+        "license": "Beerware",
+        "website": "https://forge.zici.fr/project/view/6",
+        "demo": "https://poubelle.zici.fr",
+        "code": "https://framagit.org/kepon/emailPoubellePhp"
+    },
     "license": "Beerware",
     "maintainer": {
         "name": "Krakinou",
         "email": "misterl56@hotmail.com"
     },
-        "requirements": {
-        "yunohost": ">= 3.5.2"
+    "requirements": {
+        "yunohost": ">= 4.3.0"
     },
     "multi_instance": false,
     "services": [
@@ -24,60 +30,29 @@
         "postfix"
     ],
     "arguments": {
-        "install" : [
+        "install": [
             {
                 "name": "domain",
-                "type": "domain",
-                "ask": {
-                    "en": "Choose a domain for emailpoubelle",
-                    "fr": "Choisissez un domaine pour emailpoubelle"
-                },
-                "example": "domain.org"
+                "type": "domain"
             },
             {
                 "name": "path",
                 "type": "path",
-                "ask": {
-                    "en": "Choose a path for emailpoubelle",
-                    "fr": "Choisissez un chemin pour emailpoubelle"
-                },
                 "example": "/poubelle",
                 "default": "/poubelle"
             },
             {
+                "name": "is_public",
+                "type": "boolean",
+                "default": false
+            },
+            {
                 "name": "admin",
-                "type": "user",
-                "ask": {
-                    "en": "Choose an admin user for emailpoubelle",
-                    "fr": "Choisissez un administrateur pour emailpoubelle"
-                },
-                "example": "homer",
-                "help": {
-                	"en": "Admin user can access to the control panel, block and remove all redirection and reset any settings",
-                	"fr": "L'administrateur peut accéder au panneau de controle, bloquer et supprimer les redirections ainsi que réinitialiser les réglages"
-                	}
+                "type": "user"
             },
             {
                 "name": "password",
-                "type": "password",
-                "ask": {
-                    "en": "Enter a password to access the admin panel",
-                    "fr": "Entrer un mot de passe pour accéder au tableau d'administration"
-                },
-                "example": "AveryStrongPassword"
-            },
-            {
-                "name": "is_public",
-                "type": "boolean",
-                "ask": {
-                    "en": "Is it a public application?",
-                    "fr": "Est-ce une application publique ?"
-                },
-                "default": false,
-                "help": {
-                	"en": "The app can be accessed outside Yunohost and anyone will be able to create a trash email adress",
-                	"fr": "L'application sera accessible en dehors de yunohost et n'importe qui pourra y créer une adresse poubelle"
-                	}
+                "type": "password"
             }
         ]
     }

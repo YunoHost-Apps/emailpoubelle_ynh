@@ -45,8 +45,8 @@ ram.runtime = "50M"
 
 [resources]
         [resources.sources.main]
-        url = "https://framagit.org/kepon/emailPoubellePhp/-/archive/d25ae5b243f5dbd8c2b023b80b6406c110843586/emailPoubellePhp-d25ae5b243f5dbd8c2b023b80b6406c110843586.tar.gz"
-        sha256 = "4b96d268ecf81684a91c31416b16f2b79a7409416dfd67cdd720d4d13b2ae1d8"
+        url = "https://framagit.org/kepon/emailPoubellePhp/-/archive/51a92bf46f4ea9d7ed71e3362db5d2b9ca3def5e/emailPoubellePhp-51a92bf46f4ea9d7ed71e3362db5d2b9ca3def5e.tar.gz"
+        sha256 = "ba9f0d3e27a6253cf2c4bbc91e8bb1f4adf0a287b253a640fc5506623fc50411"
 
     [resources.system_user]
 

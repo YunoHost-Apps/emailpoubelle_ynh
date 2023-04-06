@@ -57,6 +57,7 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Updating a configuration file..."
 
+password=$(ynh_app_setting_get --app=$app --key=password)
 ynh_add_config --template="../conf/conf-dist.php" --destination="$install_dir/conf.php"
 
 chmod 400 "$install_dir/conf.php"

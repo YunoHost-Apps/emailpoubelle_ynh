@@ -16,13 +16,10 @@ do_pre_regen() {
 
   sudo sed -e "s@^virtual_alias_maps\s*=\s*\(.*\)@virtual_alias_maps = hash:$install_dir/var/virtual,\1@"\
            -i $postfix_main_cf
-
 }
 
 do_post_regen() {
-
-  regen_conf_files=$1
-  
+  regen_conf_files=$1  
 }
 
 FORCE=${2:-0}

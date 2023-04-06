@@ -5,7 +5,8 @@ It shall NOT be edited by hand.
 
 # EmailPoubelle for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![Working status](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)  
+[![Integration level](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![Working status](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)
+
 [![Install EmailPoubelle with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=emailpoubelle)
 
 *[Lire ce readme en français.](./README_fr.md)*
@@ -23,7 +24,6 @@ All thanks to David.
 
 
 **Shipped version:** 2022.06.08~ynh1
-
 
 **Demo:** https://poubelle.zici.fr
 ## Disclaimers / important information

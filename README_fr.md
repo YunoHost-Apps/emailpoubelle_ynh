@@ -5,15 +5,16 @@ It shall NOT be edited by hand.
 
 # EmailPoubelle pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)
+
 [![Installer EmailPoubelle avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=emailpoubelle)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer EmailPoubelle rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer EmailPoubelle rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 A Yunohost version of [Email Poubelle](http://www.mercereau.info/sortie-de-la-version-1-0-demailpoubelle-php-email-jetable-auto-hebergeable/) by David Mercereau.
 
@@ -22,8 +23,7 @@ EmailPoubelle (Trash email) is a script to create temporay email adresses that a
 All thanks to David.
 
 
-**Version incluse :** 2022.06.08~ynh1
-
+**Version incluse :** 2022.06.08~ynh1
 
 **Démo :** https://poubelle.zici.fr
 ## Avertissements / informations importantes
@@ -35,8 +35,8 @@ Of course, once uninstalled, everything get back to normal.
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://forge.zici.fr/project/view/6>
-* Dépôt de code officiel de l'app : <https://framagit.org/kepon/emailPoubellePhp>
+* Site officiel de l’app : <https://forge.zici.fr/project/view/6>
+* Dépôt de code officiel de l’app : <https://framagit.org/kepon/emailPoubellePhp>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_emailpoubelle>
 * Signaler un bug : <https://github.com/YunoHost-Apps/emailpoubelle_ynh/issues>
 
@@ -52,4 +52,4 @@ ou
 sudo yunohost app upgrade emailpoubelle -u https://github.com/YunoHost-Apps/emailpoubelle_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>

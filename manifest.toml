@@ -55,8 +55,8 @@ ram.runtime = "50M"
     [resources.permissions]
     main.url = "/"
 
-    [resources.packaging_format]
-    packages = "mariadb-server, php7.4-geoip, php7.4-cli"
+    [resources.apt]
+    packages = "mariadb-server, php8.0-geoip, php8.0-cli"
 
     [resources.database]
     type = "mysql"

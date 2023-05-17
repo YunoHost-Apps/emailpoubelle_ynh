@@ -28,7 +28,6 @@ All thanks to David.
 **Demo:** https://poubelle.zici.fr
 ## Documentation and resources
 
-* Official app website: <https://forge.zici.fr/project/view/6>
 * Upstream app code repository: <https://framagit.org/kepon/emailPoubellePhp>
 * YunoHost documentation for this app: <https://yunohost.org/app_emailpoubelle>
 * Report a bug: <https://github.com/YunoHost-Apps/emailpoubelle_ynh/issues>

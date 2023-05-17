@@ -5,7 +5,7 @@ name = "EmailPoubelle"
 description.en = "Create throwable email address redirected to your real one"
 description.fr = "Créez des adresses email jetables qui redirigent les mails vers votre adresse réelle"
 
-version = "2022.06.08~ynh1"
+version = "2023.05.17~ynh1"
 
 maintainers = ["Krakinou"]
 
@@ -16,7 +16,7 @@ demo = "https://poubelle.zici.fr"
 code = "https://framagit.org/kepon/emailPoubellePhp"
 
 [integration]
-yunohost = ">= 11.1.17"
+yunohost = ">= 11.1.19"
 architectures = "all"
 multi_instance = false
 ldap = false

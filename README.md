@@ -5,7 +5,8 @@ It shall NOT be edited by hand.
 
 # EmailPoubelle for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![Working status](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)  
+[![Integration level](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![Working status](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)
+
 [![Install EmailPoubelle with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=emailpoubelle)
 
 *[Lire ce readme en français.](./README_fr.md)*
@@ -15,27 +16,14 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 ## Overview
 
-A Yunohost version of [Email Poubelle](http://www.mercereau.info/sortie-de-la-version-1-0-demailpoubelle-php-email-jetable-auto-hebergeable/) by David Mercereau.
-
-EmailPoubelle (Trash email) is a script to create temporay email adresses that aims to your real email address
-
-All thanks to David.
+EmailPoubelle (Trash email) is a script to create temporay email adresses that aims to your real email address.
 
 
-**Shipped version:** 2022.06.08~ynh1
-
+**Shipped version:** 2023.05.17~ynh1
 
 **Demo:** https://poubelle.zici.fr
-## Disclaimers / important information
-
-## WARNING
-
-Using this will cause to disable the Yunohost ldap aliases ! Once installed, you won't be able to use the aliasses settings that you can see when you modify your personnal settings in the SSOWAT pannel.
-Of course, once uninstalled, everything get back to normal.
-
 ## Documentation and resources
 
-* Official app website: <https://forge.zici.fr/project/view/6>
 * Upstream app code repository: <https://framagit.org/kepon/emailPoubellePhp>
 * YunoHost documentation for this app: <https://yunohost.org/app_emailpoubelle>
 * Report a bug: <https://github.com/YunoHost-Apps/emailpoubelle_ynh/issues>

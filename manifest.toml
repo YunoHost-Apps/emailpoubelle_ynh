@@ -1,0 +1,61 @@
+packaging_format = 2
+
+id = "emailpoubelle"
+name = "EmailPoubelle"
+description.en = "Create throwable email address redirected to your real one"
+description.fr = "Créez des adresses email jetables qui redirigent les mails vers votre adresse réelle"
+
+version = "2023.05.17~ynh1"
+
+maintainers = ["Krakinou"]
+
+[upstream]
+license = "Beerware"
+demo = "https://poubelle.zici.fr"
+code = "https://framagit.org/kepon/emailPoubellePhp"
+
+[integration]
+yunohost = ">= 11.1.19"
+architectures = "all"
+multi_instance = false
+ldap = false
+sso =  false
+disk = "50M"
+ram.build = "150M"
+ram.runtime = "50M"
+
+[install]
+    [install.domain]
+    type = "domain"
+
+    [install.path]
+    type = "path"
+    default = "/poubelle"
+
+    [install.init_main_permission]
+    type = "group"
+    default = false
+
+    [install.admin]
+    type = "user"
+
+    [install.password]
+    type = "password"
+
+[resources]
+        [resources.sources.main]
+        url = "https://framagit.org/kepon/emailPoubellePhp/-/archive/51a92bf46f4ea9d7ed71e3362db5d2b9ca3def5e/emailPoubellePhp-51a92bf46f4ea9d7ed71e3362db5d2b9ca3def5e.tar.gz"
+        sha256 = "ba9f0d3e27a6253cf2c4bbc91e8bb1f4adf0a287b253a640fc5506623fc50411"
+
+    [resources.system_user]
+
+    [resources.install_dir]
+
+    [resources.permissions]
+    main.url = "/"
+
+    [resources.apt]
+    packages = "mariadb-server, php7.4-geoip, php7.4-cli, php7.4-mysql"
+
+    [resources.database]
+    type = "mysql"

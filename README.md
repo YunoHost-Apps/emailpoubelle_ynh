@@ -16,11 +16,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 ## Overview
 
-A Yunohost version of [Email Poubelle](http://www.mercereau.info/sortie-de-la-version-1-0-demailpoubelle-php-email-jetable-auto-hebergeable/) by David Mercereau.
-
-EmailPoubelle (Trash email) is a script to create temporay email adresses that aims to your real email address
-
-All thanks to David.
+EmailPoubelle (Trash email) is a script to create temporay email adresses that aims to your real email address.
 
 
 **Shipped version:** 2023.05.17~ynh1

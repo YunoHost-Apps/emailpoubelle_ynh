@@ -16,8 +16,7 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 
 ## Vue d’ensemble
 
-EmailPoubelle (Trash email) is a script to create temporay email adresses that aims to your real email address.
-
+EmailPoubelle est un script pour créer des adresses e-mail temporaires qui visent votre véritable adresse e-mail.
 
 **Version incluse :** 2023.05.17~ynh1
 

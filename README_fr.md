@@ -23,7 +23,7 @@ EmailPoubelle (Trash email) is a script to create temporay email adresses that a
 All thanks to David.
 
 
-**Version incluse :** 2022.06.08~ynh1
+**Version incluse :** 2023.05.17~ynh1
 
 **Démo :** https://poubelle.zici.fr
 ## Documentations et ressources

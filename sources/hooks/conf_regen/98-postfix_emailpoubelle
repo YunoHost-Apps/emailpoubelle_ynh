@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source /usr/share/yunohost/helpers
-final_path=$(ynh_app_setting_get emailpoubelle final_path)
+install_dir=$(ynh_app_setting_get --app=$app --key=install_dir)
 
 set -e
 
@@ -14,15 +14,12 @@ do_pre_regen() {
   # FIXME : check this file actually exists to not crash when only running this
   # hook alone
 
-  sudo sed -e "s@^virtual_alias_maps\s*=\s*\(.*\)@virtual_alias_maps = hash:$final_path/var/virtual,\1@"\
+  sudo sed -e "s@^virtual_alias_maps\s*=\s*\(.*\)@virtual_alias_maps = hash:$install_dir/var/virtual,\1@"\
            -i $postfix_main_cf
-
 }
 
 do_post_regen() {
-
-  regen_conf_files=$1
-  
+  regen_conf_files=$1  
 }
 
 FORCE=${2:-0}

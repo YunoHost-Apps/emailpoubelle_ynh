@@ -10,85 +10,10 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# LOAD SETTINGS
-#=================================================
-ynh_script_progression --message="Loading installation settings..."
-
-app=$YNH_APP_INSTANCE_NAME
-
-domain=$(ynh_app_setting_get --app=$app --key=domain)
-path_url=$(ynh_app_setting_get --app=$app --key=path)
-admin=$(ynh_app_setting_get --app=$app --key=admin)
-final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-db_name=$(ynh_app_setting_get --app=$app --key=db_name)
-db_user=$db_name
-db_pwd=$(ynh_app_setting_get --app=$app --key=mysqlpwd)
-password=$(ynh_app_setting_get --app=$app --key=password)
-
-#=================================================
 # CHECK VERSION
 #=================================================
-ynh_script_progression --message="Checking version..."
 
 upgrade_type=$(ynh_check_app_version_changed)
-
-#=================================================
-# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
-#=================================================
-ynh_script_progression --message="Backing up the app before upgrading (may take a while)..."
-
-# Backup the current version of the app
-ynh_backup_before_upgrade
-ynh_clean_setup () {
-	# Restore it if the upgrade fails
-	ynh_restore_upgradebackup
-}
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
-# STANDARD UPGRADE STEPS
-#=================================================
-# ENSURE DOWNWARD COMPATIBILITY
-#=================================================
-ynh_script_progression --message="Ensuring downward compatibility..."
-
-# Cleaning legacy permissions
-if ynh_legacy_permissions_exists; then
-	ynh_legacy_permissions_delete_all
-
-	ynh_app_setting_delete --app=$app --key=is_public
-fi
-
-# If db_name doesn't exist, create it
-if [ -z "$db_name" ]; then
-	db_name=$(ynh_sanitize_dbid --db_name=$app)
-	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
-fi
-
-# If final_path doesn't exist, create it
-if [ -z "$final_path" ]; then
-	final_path=/var/www/$app
-	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
-fi
-
-if [ -z $db_pwd ]; then
-  db_pwd=$(grep DBPASS $final_path/conf.php | cut -d"'" -f4)
-  ynh_app_setting_set --app=$app --key=mysqlpwd --value=$db_pwd
-fi
-
-if [ -z $password ]; then
-  password=$(grep ADMIN_PASSWORD $final_path/conf.php | cut -d"'" -f4)
-  ynh_app_setting_set --app=$app --key=password --value=$password
-fi
-
-#=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Making sure dedicated system user exists..."
-
-# Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app --home_dir="$final_path"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -99,23 +24,15 @@ then
 	ynh_script_progression --message="Upgrading source files..."
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path" --keep="conf.php www/index.php"
-	ynh_add_config --template="../conf/index_source.php" --destination="$final_path/www/index.php"
-	ynh_secure_remove --file="$final_path/www/admin.php"
+	ynh_setup_source --dest_dir="$install_dir" --keep="conf.php www/index.php"
+	ynh_add_config --template="../conf/index_source.php" --destination="$install_dir/www/index.php"
+	ynh_secure_remove --file="$install_dir/www/admin.php"
 
-	ln -s $final_path/lib $final_path/www/lib
+	ln -s $install_dir/lib $install_dir/www/lib
 fi
 
-chmod 750 "$final_path"
-chmod -R o-rwx "$final_path"
-chown -R $app:www-data "$final_path"
-
-#=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Upgrading dependencies..."
-
-ynh_install_app_dependencies $pkg_dependencies
+chmod -R o-rwx "$install_dir"
+chown -R $app:www-data "$install_dir"
 
 #=================================================
 # PHP-FPM CONFIGURATION
@@ -123,7 +40,7 @@ ynh_install_app_dependencies $pkg_dependencies
 ynh_script_progression --message="Upgrading PHP-FPM configuration..."
 
 # Create a dedicated PHP-FPM config
-ynh_add_fpm_config
+ynh_add_fpm_config --usage=low --footprint=low
 
 #=================================================
 # NGINX CONFIGURATION
@@ -140,10 +57,11 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Updating a configuration file..."
 
-ynh_add_config --template="../conf/conf-dist.php" --destination="$final_path/conf.php"
+password=$(ynh_app_setting_get --app=$app --key=password)
+ynh_add_config --template="../conf/conf-dist.php" --destination="$install_dir/conf.php"
 
-chmod 400 "$final_path/conf.php"
-chown $app:$app "$final_path/conf.php"
+chmod 400 "$install_dir/conf.php"
+chown $app:$app "$install_dir/conf.php"
 
 cp -R ../sources/hooks/conf_regen/98-postfix_emailpoubelle /usr/share/yunohost/hooks/conf_regen/
 mv /etc/postfix/main.cf /etc/postfix/main.cf.emailpoubelle.bak
@@ -154,15 +72,6 @@ ynh_systemd_action --service_name=postfix --action=reload
 ynh_add_config --template="../conf/emailpoubelle.cron" --destination="/etc/cron.d/$app"
 chown root:root /etc/cron.d/$app
 chmod 644 /etc/cron.d/$app
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# RELOAD NGINX
-#=================================================
-ynh_script_progression --message="Reloading NGINX web server..."
-
-ynh_systemd_action --service_name=nginx --action=reload
 
 #=================================================
 # END OF SCRIPT

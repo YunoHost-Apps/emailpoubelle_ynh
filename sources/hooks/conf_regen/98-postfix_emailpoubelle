@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source /usr/share/yunohost/helpers
+app=$YNH_APP_INSTANCE_NAME
 install_dir=$(ynh_app_setting_get --app=$app --key=install_dir)
 
 set -e

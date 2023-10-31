@@ -25,7 +25,7 @@ EmailPoubelle (Trash email) is a script to create temporay email adresses that a
 ## Documentation and resources
 
 * Upstream app code repository: <https://framagit.org/kepon/emailPoubellePhp>
-* YunoHost documentation for this app: <https://yunohost.org/app_emailpoubelle>
+* YunoHost Store: <https://apps.yunohost.org/app/emailpoubelle>
 * Report a bug: <https://github.com/YunoHost-Apps/emailpoubelle_ynh/issues>
 
 ## Developer info

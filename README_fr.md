@@ -24,7 +24,7 @@ EmailPoubelle est un script pour créer des adresses e-mail temporaires qui vise
 ## Documentations et ressources
 
 * Dépôt de code officiel de l’app : <https://framagit.org/kepon/emailPoubellePhp>
-* Documentation YunoHost pour cette app : <https://yunohost.org/app_emailpoubelle>
+* YunoHost Store: <https://apps.yunohost.org/app/emailpoubelle>
 * Signaler un bug : <https://github.com/YunoHost-Apps/emailpoubelle_ynh/issues>
 
 ## Informations pour les développeurs

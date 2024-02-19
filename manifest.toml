@@ -46,6 +46,7 @@ ram.runtime = "50M"
         [resources.sources.main]
         url = "https://framagit.org/kepon/emailPoubellePhp/-/archive/51a92bf46f4ea9d7ed71e3362db5d2b9ca3def5e/emailPoubellePhp-51a92bf46f4ea9d7ed71e3362db5d2b9ca3def5e.tar.gz"
         sha256 = "ba9f0d3e27a6253cf2c4bbc91e8bb1f4adf0a287b253a640fc5506623fc50411"
+        autoupdate.strategy = "latest_gitlab_commit"
 
     [resources.system_user]
 

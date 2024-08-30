@@ -1,49 +1,43 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
 # REMOVE NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Removing NGINX web server configuration..."
+ynh_script_progression "Removing NGINX web server configuration..."
 
 # Remove the dedicated NGINX config
-ynh_remove_nginx_config
+ynh_config_remove_nginx
 
 #=================================================
 # REMOVE PHP-FPM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Removing PHP-FPM configuration..."
+ynh_script_progression "Removing PHP-FPM configuration..."
 
 # Remove the dedicated PHP-FPM config
-ynh_remove_fpm_config
+ynh_config_remove_phpfpm
 
 #=================================================
 # SPECIFIC REMOVE
 #=================================================
 # REMOVE VARIOUS FILES
 #=================================================
-ynh_script_progression --message="Removing various files..."
+ynh_script_progression "Removing various files..."
 
 # Remove a cron file
-ynh_secure_remove --file="/etc/cron.d/$app"
+ynh_safe_rm "/etc/cron.d/$app"
 
-ynh_replace_string --match_string="devnull:/dev/null" --replace_string="" --target_file="/etc/aliases"
+ynh_replace --match="devnull:/dev/null" --replace="" --file="/etc/aliases"
 newaliases
 
-ynh_secure_remove --file="/usr/share/yunohost/hooks/conf_regen/98-postfix_emailpoubelle"
+ynh_safe_rm "/usr/share/yunohost/hooks/conf_regen/98-postfix_emailpoubelle"
 yunohost tools regen-conf postfix
-ynh_systemd_action --service_name=postfix --action=reload
+ynh_systemctl --service=postfix --action=reload
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Removal of $app completed"
+ynh_script_progression "Removal of $app completed"

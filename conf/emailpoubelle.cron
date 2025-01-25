@@ -1,1 +1,1 @@
-0 */2 * * * www-data /usr/bin/php__PHPVERSION__ __INSTALL_DIR__/www/index.php > /dev/null 2>&1
+0 */2 * * * www-data /usr/bin/php__PHP_VERSION__ __INSTALL_DIR__/www/index.php > /dev/null 2>&1

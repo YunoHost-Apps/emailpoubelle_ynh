@@ -5,7 +5,9 @@ EZ editatu eskuz.
 
 # EmailPoubelle YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)
+[![Integrazio maila](https://apps.yunohost.org/badge/integration/emailpoubelle)](https://ci-apps.yunohost.org/ci/apps/emailpoubelle/)
+![Funtzionamendu egoera](https://apps.yunohost.org/badge/state/emailpoubelle)
+![Mantentze egoera](https://apps.yunohost.org/badge/maintained/emailpoubelle)
 
 [![Instalatu EmailPoubelle YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=emailpoubelle)
 
@@ -19,7 +21,7 @@ EZ editatu eskuz.
 EmailPoubelle (Trash email) is a script to create temporay email adresses that aims to your real email address.
 
 
-**Paketatutako bertsioa:** 2023.05.17~ynh1
+**Paketatutako bertsioa:** 2025.01.23~ynh1
 
 **Demoa:** <https://poubelle.zici.fr>
 ## Dokumentazioa eta baliabideak

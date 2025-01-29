@@ -21,7 +21,7 @@ EZ editatu eskuz.
 EmailPoubelle (Trash email) is a script to create temporay email adresses that aims to your real email address.
 
 
-**Paketatutako bertsioa:** 2025.01.23~ynh1
+*Paketatutako bertsioa:** 2025.01.23~ynh1
 
 **Demoa:** <https://poubelle.zici.fr>
 ## Dokumentazioa eta baliabideak

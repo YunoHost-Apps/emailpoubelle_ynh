@@ -5,7 +5,9 @@ Il NE doit PAS être modifié à la main.
 
 # EmailPoubelle pour YunoHost
 
-[![Niveau d’intégration](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)
+[![Niveau d’intégration](https://apps.yunohost.org/badge/integration/emailpoubelle)](https://ci-apps.yunohost.org/ci/apps/emailpoubelle/)
+![Statut du fonctionnement](https://apps.yunohost.org/badge/state/emailpoubelle)
+![Statut de maintenance](https://apps.yunohost.org/badge/maintained/emailpoubelle)
 
 [![Installer EmailPoubelle avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=emailpoubelle)
 
@@ -18,7 +20,7 @@ Il NE doit PAS être modifié à la main.
 
 EmailPoubelle est un script pour créer des adresses e-mail temporaires qui visent votre véritable adresse e-mail.
 
-**Version incluse :** 2023.05.17~ynh1
+**Version incluse :** 2025.01.23~ynh1
 
 **Démo :** <https://poubelle.zici.fr>
 ## Documentations et ressources

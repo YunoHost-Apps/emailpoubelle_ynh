@@ -5,7 +5,9 @@ No se debe editar a mano.
 
 # EmailPoubelle para Yunohost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![Estado funcional](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![Estado En Mantención](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)
+[![Nivel de integración](https://apps.yunohost.org/badge/integration/emailpoubelle)](https://ci-apps.yunohost.org/ci/apps/emailpoubelle/)
+![Estado funcional](https://apps.yunohost.org/badge/state/emailpoubelle)
+![Estado En Mantención](https://apps.yunohost.org/badge/maintained/emailpoubelle)
 
 [![Instalar EmailPoubelle con Yunhost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=emailpoubelle)
 
@@ -19,7 +21,7 @@ No se debe editar a mano.
 EmailPoubelle (Trash email) is a script to create temporay email adresses that aims to your real email address.
 
 
-**Versión actual:** 2023.05.17~ynh1
+**Versión actual:** 2025.01.23~ynh1
 
 **Demo:** <https://poubelle.zici.fr>
 ## Documentaciones y recursos
@@ -30,7 +32,7 @@ EmailPoubelle (Trash email) is a script to create temporay email adresses that a
 
 ## Información para desarrolladores
 
-Por favor enviar sus correcciones a la [`branch testing`](https://github.com/YunoHost-Apps/emailpoubelle_ynh/tree/testing
+Por favor enviar sus correcciones a la [rama `testing`](https://github.com/YunoHost-Apps/emailpoubelle_ynh/tree/testing).
 
 Para probar la rama `testing`, sigue asÍ:
 

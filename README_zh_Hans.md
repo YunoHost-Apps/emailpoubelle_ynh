@@ -3,9 +3,11 @@
 请勿手动编辑。
 -->
 
-# YunoHost 的 EmailPoubelle
+# YunoHost 上的 EmailPoubelle
 
-[![集成程度](https://dash.yunohost.org/integration/emailpoubelle.svg)](https://dash.yunohost.org/appci/app/emailpoubelle) ![工作状态](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/emailpoubelle.maintain.svg)
+[![集成程度](https://apps.yunohost.org/badge/integration/emailpoubelle)](https://ci-apps.yunohost.org/ci/apps/emailpoubelle/)
+![工作状态](https://apps.yunohost.org/badge/state/emailpoubelle)
+![维护状态](https://apps.yunohost.org/badge/maintained/emailpoubelle)
 
 [![使用 YunoHost 安装 EmailPoubelle](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=emailpoubelle)
 
@@ -19,7 +21,7 @@
 EmailPoubelle (Trash email) is a script to create temporay email adresses that aims to your real email address.
 
 
-**分发版本：** 2023.05.17~ynh1
+**分发版本：** 2025.01.23~ynh1
 
 **演示：** <https://poubelle.zici.fr>
 ## 文档与资源

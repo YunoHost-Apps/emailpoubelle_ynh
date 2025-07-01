@@ -16,9 +16,6 @@ ynh_config_change_url_nginx
 
 ynh_config_add --template="conf-dist.php" --destination="$install_dir/conf.php"
 
-chmod 400 "$install_dir/conf.php"
-chown $app:$app "$install_dir/conf.php"
-
 #=================================================
 # END OF SCRIPT
 #=================================================

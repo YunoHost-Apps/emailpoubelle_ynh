@@ -15,12 +15,14 @@ demo = "https://poubelle.zici.fr"
 code = "https://framagit.org/kepon/emailPoubellePhp"
 
 [integration]
-yunohost = ">= 11.2.18"
+yunohost = ">= 12.0.9"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = false
+
 ldap = false
 sso =  false
+
 disk = "50M"
 ram.build = "150M"
 ram.runtime = "50M"
@@ -58,7 +60,7 @@ ram.runtime = "50M"
     main.url = "/"
 
     [resources.apt]
-    packages = "mariadb-server, php7.4-geoip, php7.4-cli, php7.4-mysql"
+    packages = "mariadb-server, php8.3-geoip, php8.3-mysql"
 
     [resources.database]
     type = "mysql"

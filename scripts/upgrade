@@ -6,22 +6,16 @@ source /usr/share/yunohost/helpers
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
+ynh_script_progression "Upgrading source files..."
 
-# FIXME: this is still supported but the recommendation is now to *always* re-setup the app sources wether or not the upstream sources changed
-if ynh_app_upstream_version_changed
-then
-	ynh_script_progression "Upgrading source files..."
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source --dest_dir="$install_dir" --keep="conf.php www/index.php"
 
-	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir" --keep="conf.php www/index.php"
-	ynh_config_add --template="index_source.php" --destination="$install_dir/www/index.php"
-	ynh_safe_rm "$install_dir/www/admin.php"
+ynh_config_add --template="index_source.php" --destination="$install_dir/www/index.php"
+ynh_safe_rm "$install_dir/www/admin.php"
 
-	ln -s $install_dir/lib $install_dir/www/lib
-fi
+ln -s $install_dir/lib $install_dir/www/lib
 
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:www-data "$install_dir"
 #=================================================
 # PHP-FPM CONFIGURATION
 #=================================================
@@ -29,11 +23,6 @@ ynh_script_progression "Upgrading PHP-FPM configuration..."
 
 # Create a dedicated PHP-FPM config
 ynh_config_add_phpfpm
-
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression "Upgrading NGINX web server configuration..."
 
 # Create a dedicated NGINX config
 ynh_config_add_nginx
@@ -46,9 +35,6 @@ ynh_script_progression "Updating configuration..."
 password=$(ynh_app_setting_get --key=password)
 ynh_config_add --template="conf-dist.php" --destination="$install_dir/conf.php"
 
-chmod 400 "$install_dir/conf.php"
-chown $app:$app "$install_dir/conf.php"
-
 cp -R ../sources/hooks/conf_regen/98-postfix_emailpoubelle /usr/share/yunohost/hooks/conf_regen/
 mv /etc/postfix/main.cf /etc/postfix/main.cf.emailpoubelle.bak
 yunohost tools regen-conf postfix -f
@@ -56,8 +42,6 @@ ynh_systemctl --service=postfix --action=reload
 
 # Adding cronjob for removing expired email addresses
 ynh_config_add --template="emailpoubelle.cron" --destination="/etc/cron.d/$app"
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown root:root /etc/cron.d/$app
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 644 /etc/cron.d/$app
 
 #=================================================
 # END OF SCRIPT

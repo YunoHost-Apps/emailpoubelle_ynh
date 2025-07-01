@@ -29,13 +29,12 @@ ynh_script_progression "Setting up source files..."
 
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir"
+
 ynh_config_add --template="index_source.php" --destination="$install_dir/www/index.php"
 ynh_safe_rm "$install_dir/www/admin.php"
 
 ln -s $install_dir/lib $install_dir/www/lib
 
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:www-data "$install_dir"
 #=================================================
 # PHP-FPM CONFIGURATION
 #=================================================
@@ -44,25 +43,15 @@ ynh_script_progression "Configuring PHP-FPM..."
 # Create a dedicated PHP-FPM config
 ynh_config_add_phpfpm
 
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression "Configuring NGINX web server..."
-
 # Create a dedicated NGINX config
 ynh_config_add_nginx
 
-#=================================================
-# SPECIFIC SETUP
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
 ynh_script_progression "Adding $app's configuration..."
 
 ynh_config_add --template="conf-dist.php" --destination="$install_dir/conf.php"
-
-chmod 400 "$install_dir/conf.php"
-chown $app:$app "$install_dir/conf.php"
 
 # Setting postfix to use virtual aliases file
 # Add postfix configuration hook and regen postfix conf
@@ -83,8 +72,6 @@ ynh_systemctl --service=postfix --action=reload
 
 # Adding cronjob for removing expired email addresses
 ynh_config_add --template="emailpoubelle.cron" --destination="/etc/cron.d/$app"
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown root:root /etc/cron.d/$app
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 644 /etc/cron.d/$app
 
 #=================================================
 # END OF SCRIPT

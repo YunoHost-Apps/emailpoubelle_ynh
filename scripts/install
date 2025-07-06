@@ -13,8 +13,8 @@ source /usr/share/yunohost/helpers
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
 
-password=$YNH_APP_ARG_PASSWORD
-ynh_app_setting_set --app=$app --key=password --value=$password
+password="$YNH_APP_ARG_PASSWORD"
+ynh_app_setting_set --app=$app --key=password --value="$password"
 
 #=================================================
 # STANDARD MODIFICATIONS

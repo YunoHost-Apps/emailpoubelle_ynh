@@ -5,7 +5,7 @@ name = "EmailPoubelle"
 description.en = "Create throwable email address redirected to your real one"
 description.fr = "Créez des adresses email jetables qui redirigent les mails vers votre adresse réelle"
 
-version = "2023.05.17~ynh1"
+version = "2025.01.23~ynh1"
 
 maintainers = ["Krakinou"]
 
@@ -47,8 +47,8 @@ ram.runtime = "50M"
 
 [resources]
         [resources.sources.main]
-        url = "https://framagit.org/kepon/emailPoubellePhp/-/archive/51a92bf46f4ea9d7ed71e3362db5d2b9ca3def5e/emailPoubellePhp-51a92bf46f4ea9d7ed71e3362db5d2b9ca3def5e.tar.gz"
-        sha256 = "ba9f0d3e27a6253cf2c4bbc91e8bb1f4adf0a287b253a640fc5506623fc50411"
+        url = "https://framagit.org/kepon/emailPoubellePhp/-/archive/6801cfcc727bc619135116afab684976f232b197/emailPoubellePhp-6801cfcc727bc619135116afab684976f232b197.tar.bz2"
+        sha256 = "aacbcd70e99f9404f9e7bc2c10cd7d4af5a505d078af9541efc8f99f9430c0bd"
         autoupdate.strategy = "latest_gitlab_commit"
 
     [resources.system_user]

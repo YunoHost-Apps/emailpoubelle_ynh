@@ -62,7 +62,7 @@ yunohost tools regen-conf postfix
 
 touch $install_dir/var/virtual
 postmap $install_dir/var/virtual
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:www-data "$install_dir"
+chown -R $app:www-data "$install_dir"
 # Create an alias for deleted junk adresses
 cp /etc/aliases /etc/aliases.emailpoubelle.bak #backup it
 

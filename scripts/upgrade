@@ -1,80 +1,50 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# CHECK VERSION
-#=================================================
-
-upgrade_type=$(ynh_check_app_version_changed)
-
-#=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
+ynh_script_progression "Upgrading source files..."
 
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Upgrading source files..."
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source --dest_dir="$install_dir" --keep="conf.php www/index.php"
 
-	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir" --keep="conf.php www/index.php"
-	ynh_add_config --template="../conf/index_source.php" --destination="$install_dir/www/index.php"
-	ynh_secure_remove --file="$install_dir/www/admin.php"
+ynh_config_add --template="index_source.php" --destination="$install_dir/www/index.php"
+ynh_safe_rm "$install_dir/www/admin.php"
 
-	ln -s $install_dir/lib $install_dir/www/lib
-fi
-
-chmod -R o-rwx "$install_dir"
-chown -R $app:www-data "$install_dir"
+ln -s $install_dir/lib $install_dir/www/lib
 
 #=================================================
 # PHP-FPM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Upgrading PHP-FPM configuration..."
+ynh_script_progression "Upgrading PHP-FPM configuration..."
 
 # Create a dedicated PHP-FPM config
-ynh_add_fpm_config --usage=low --footprint=low
-
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Upgrading NGINX web server configuration..."
+ynh_config_add_phpfpm
 
 # Create a dedicated NGINX config
-ynh_add_nginx_config
+ynh_config_add_nginx
 
-#=================================================
-# SPECIFIC UPGRADE
 #=================================================
 # UPDATE A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Updating a configuration file..."
+ynh_script_progression "Updating configuration..."
 
-password=$(ynh_app_setting_get --app=$app --key=password)
-ynh_add_config --template="../conf/conf-dist.php" --destination="$install_dir/conf.php"
-
-chmod 400 "$install_dir/conf.php"
-chown $app:$app "$install_dir/conf.php"
+password=$(ynh_app_setting_get --key=password)
+ynh_config_add --template="conf-dist.php" --destination="$install_dir/conf.php"
 
 cp -R ../sources/hooks/conf_regen/98-postfix_emailpoubelle /usr/share/yunohost/hooks/conf_regen/
 mv /etc/postfix/main.cf /etc/postfix/main.cf.emailpoubelle.bak
 yunohost tools regen-conf postfix -f
-ynh_systemd_action --service_name=postfix --action=reload
+ynh_systemctl --service=postfix --action=reload
 
 # Adding cronjob for removing expired email addresses
-ynh_add_config --template="../conf/emailpoubelle.cron" --destination="/etc/cron.d/$app"
-chown root:root /etc/cron.d/$app
-chmod 644 /etc/cron.d/$app
+ynh_config_add --template="emailpoubelle.cron" --destination="/etc/cron.d/$app"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed"
+ynh_script_progression "Upgrade of $app completed"

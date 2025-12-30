@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
@@ -13,19 +7,17 @@ source /usr/share/yunohost/helpers
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
 
-password="$YNH_APP_ARG_PASSWORD"
-ynh_app_setting_set --app=$app --key=password --value="$password"
+password=$YNH_APP_ARG_PASSWORD
+ynh_app_setting_set --key=password --value="$password"
 
-#=================================================
-# STANDARD MODIFICATIONS
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=15
+ynh_script_progression "Installing dependencies..."
 
 #install locale (nginx will restart at the end of the install)
 for i in $lang ; do
-	ynh_replace_string --match_string="# $i" --replace_string="$i" --target_file="/etc/locale.gen"
+	ynh_replace --match="# $i" --replace="$i" --file="/etc/locale.gen"
 done
 
 locale-gen
@@ -33,69 +25,56 @@ locale-gen
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Setting up source files..." --weight=5
+ynh_script_progression "Setting up source files..."
 
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir"
-ynh_add_config --template="../conf/index_source.php" --destination="$install_dir/www/index.php"
-ynh_secure_remove --file="$install_dir/www/admin.php"
+
+ynh_config_add --template="index_source.php" --destination="$install_dir/www/index.php"
+ynh_safe_rm "$install_dir/www/admin.php"
 
 ln -s $install_dir/lib $install_dir/www/lib
-
-chmod -R o-rwx "$install_dir"
-chown -R $app:www-data "$install_dir"
 
 #=================================================
 # PHP-FPM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring PHP-FPM..."
+ynh_script_progression "Configuring PHP-FPM..."
 
 # Create a dedicated PHP-FPM config
-ynh_add_fpm_config --usage=low --footprint=low
-
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Configuring NGINX web server..."
+ynh_config_add_phpfpm
 
 # Create a dedicated NGINX config
-ynh_add_nginx_config
+ynh_config_add_nginx
 
-#=================================================
-# SPECIFIC SETUP
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding a configuration file..."
+ynh_script_progression "Adding $app's configuration..."
 
-ynh_add_config --template="../conf/conf-dist.php" --destination="$install_dir/conf.php"
-
-chmod 400 "$install_dir/conf.php"
-chown $app:$app "$install_dir/conf.php"
+ynh_config_add --template="conf-dist.php" --destination="$install_dir/conf.php"
 
 # Setting postfix to use virtual aliases file
 # Add postfix configuration hook and regen postfix conf
 cp -R ../sources/hooks/conf_regen/98-postfix_emailpoubelle /usr/share/yunohost/hooks/conf_regen/
 yunohost tools regen-conf postfix
 
-# Create the virtual aliases file 
+# Create the virtual aliases file
+
 touch $install_dir/var/virtual
 postmap $install_dir/var/virtual
 chown -R $app:www-data "$install_dir"
-
 # Create an alias for deleted junk adresses
-cp /etc/aliases /etc/aliases.emailpoubelle.bak #backup it 
+cp /etc/aliases /etc/aliases.emailpoubelle.bak #backup it
+
 echo "devnull:/dev/null" | tee -a /etc/aliases
 newaliases
-ynh_systemd_action --service_name=postfix --action=reload
+ynh_systemctl --service=postfix --action=reload
 
 # Adding cronjob for removing expired email addresses
-ynh_add_config --template="../conf/emailpoubelle.cron" --destination="/etc/cron.d/$app"
-chown root:root /etc/cron.d/$app
-chmod 644 /etc/cron.d/$app
+ynh_config_add --template="emailpoubelle.cron" --destination="/etc/cron.d/$app"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed" --last
+ynh_script_progression "Installation of $app completed"
